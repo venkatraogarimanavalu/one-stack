@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from .models import *
-from .views import *
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 # Home API (can return welcome info)
 def home(request):
@@ -48,3 +52,35 @@ def gallery(request):
 
 
 # Create your views here.
+
+
+@csrf_exempt
+def register_user(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get("username")
+        password = data.get("password")
+        email = data.get("email")
+        name = data.get("name")
+
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({"error": "Username already exists"}, status=400)
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+        UserProfile.objects.create(user=user, name=name)
+
+        return JsonResponse({"message": "User registered successfully"})
+
+@csrf_exempt
+def login_user(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get("username")
+        password = data.get("password")
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return JsonResponse({"message": "Login successful", "username": user.username})
+        else:
+            return JsonResponse({"error": "Invalid credentials"}, status=400)

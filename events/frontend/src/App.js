@@ -6,15 +6,14 @@ import Profile from './pages/profile';
 import Events from './pages/events';
 import Gallery from './pages/gallery';
 
-import Navbar from './components/navbar';  // NEW NAVBAR
+import Navbar from './components/navbar';  // Navbar with login/register
 import './App.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        
-        {/* Styled Navbar */}
+        {/* Navbar */}
         <Navbar />
 
         {/* Page Content */}
@@ -26,7 +25,6 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
           </Routes>
         </div>
-
       </div>
     </Router>
   );

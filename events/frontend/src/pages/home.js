@@ -19,11 +19,26 @@ function Home() {
   return (
     <div>
       <h1>Home Page</h1>
-      <ul>
-        {names.map((name, index) => (
-          <li key={index}>{name}</li>
-        ))}
-      </ul>
+      {names.length > 0 ? (
+        <table border="1" cellPadding="10" style={{ borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {names.map((name, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No names found</p>
+      )}
     </div>
   );
 }
