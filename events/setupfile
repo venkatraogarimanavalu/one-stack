@@ -1,0 +1,11 @@
+.venv\Scripts\activate
+cd events
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+Superuser 
+handu
+anugani12@gmail.com
+handugani
