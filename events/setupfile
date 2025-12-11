@@ -9,3 +9,6 @@ Superuser
 handu
 anugani12@gmail.com
 handugani
+
+cd frontend
+npm start
