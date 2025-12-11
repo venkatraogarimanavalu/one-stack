@@ -42,6 +42,7 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+    
 class pricemoney(models.Model):
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
     position = models.CharField(max_length=50)
@@ -75,7 +76,7 @@ class EventCategory(models.Model):
     category = models.CharField(max_length=100)
     event = models.ForeignKey('Event', on_delete=models.CASCADE)
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
-    weights=models.FloatField()
+    marks_range=models.FloatField()
 
     def __str__(self):
         return f"{self.event.title} - {self.category}"
