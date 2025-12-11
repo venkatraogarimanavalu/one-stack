@@ -25,4 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 # Django
 db.sqlite3
+db.sqlite3-journal
 
