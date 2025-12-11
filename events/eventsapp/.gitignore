@@ -25,8 +25,4 @@ yarn-debug.log*
 yarn-error.log*
 # Django
 db.sqlite3
-*.pyc
-__pycache__/
-media/
-staticfiles/
-.env
+
