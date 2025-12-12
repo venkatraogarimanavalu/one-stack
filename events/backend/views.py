@@ -101,7 +101,7 @@ def login_user(request):
     if request.method == "POST":
         data = json.loads(request.body)
         print(data)
-        username = data.get("username")
+        username = data.get("name")
         password = data.get("password")
 
         user = authenticate(request, username=username, password=password)

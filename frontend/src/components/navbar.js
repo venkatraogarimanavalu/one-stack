@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./navbar.css";
 
 export default function Navbar() {
-  // Modals
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Register form states
+  // Register states
   const [name, setName] = useState("");
   const [father, setFather] = useState("");
   const [mother, setMother] = useState("");
@@ -19,27 +19,15 @@ export default function Navbar() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Login form states
+  // Login states
   const [loginName, setLoginName] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
-  // Logged-in user
   const [user, setUser] = useState(null);
-
-  // Persist login across refresh
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(savedUser);
-  }, []);
 
   // Login handler
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    const loginData = {
-      username: loginName,
-      password: loginPassword,
-    };
+    const loginData = { name: loginName, password: loginPassword };
 
     try {
       const response = await fetch("http://127.0.0.1:8001/login/", {
@@ -49,12 +37,10 @@ export default function Navbar() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
+        setUser(data.username || loginName);
         alert("Login successful!");
         setShowLogin(false);
-        setUser(data.username);
-        localStorage.setItem("user", data.username); // persist login
       } else {
         alert("Login failed: " + data.error);
       }
@@ -63,44 +49,10 @@ export default function Navbar() {
     }
   };
 
-  // Logout handler
-  const handleLogout = async () => {
-  try {
-    const response = await fetch("http://127.0.0.1:8001/logout/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      alert(data.message);
-      setUser(null);
-      localStorage.removeItem("user");
-    } else {
-      alert("Logout failed: " + data.error);
-    }
-  } catch (error) {
-    alert("Logout request failed");
-  }
-};
-
-
   // Register handler
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      name,
-      father,
-      mother,
-      surname,
-      dob,
-      gender,
-      village,
-      phone,
-      email,
-      password,
-    };
+    const formData = { name, father, mother, surname, dob, gender, village, phone, email, password };
 
     try {
       const response = await fetch("http://127.0.0.1:8001/register/", {
@@ -110,7 +62,6 @@ export default function Navbar() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         alert("Registration successful!");
         setShowRegister(false);
@@ -122,24 +73,52 @@ export default function Navbar() {
     }
   };
 
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8001/logout/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        setUser(null);
+      } else {
+        alert("Logout failed: " + data.error);
+      }
+    } catch (error) {
+      alert("Logout request failed");
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-brand">Venkatarao gari manavalu</div>
 
-      <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/profile/1">Profile</Link></li>
-        <li><Link to="/events">Events</Link></li>
-        <li><Link to="/gallery">Gallery</Link></li>
+      {/* Hamburger for mobile */}
+      <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-        {!user ? (
+      <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
+        <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+        <li><Link to="/profile/1" onClick={() => setMenuOpen(false)}>Profile</Link></li>
+        <li><Link to="/events" onClick={() => setMenuOpen(false)}>Events</Link></li>
+        <li><Link to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link></li>
+
+        {!user && (
           <>
-            <li><button onClick={() => setShowLogin(true)}>Login</button></li>
-            <li><button onClick={() => setShowRegister(true)}>Register</button></li>
+            <li><button onClick={() => { setShowLogin(true); setMenuOpen(false); }}>Login</button></li>
+            <li><button onClick={() => { setShowRegister(true); setMenuOpen(false); }}>Register</button></li>
           </>
-        ) : (
+        )}
+
+        {user && (
           <>
-            <li>Hi, {user}</li>
+            <li><span>Hi, {user}</span></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </>
         )}
@@ -152,20 +131,8 @@ export default function Navbar() {
             <button className="close-btn" onClick={() => setShowLogin(false)}>×</button>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
-              <input
-                type="text"
-                placeholder="Name / Email"
-                value={loginName}
-                onChange={(e) => setLoginName(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-                required
-              />
+              <input type="text" placeholder="Name / Email" value={loginName} onChange={(e) => setLoginName(e.target.value)} required />
+              <input type="password" placeholder="Password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} required />
               <button type="submit">Login</button>
             </form>
           </div>

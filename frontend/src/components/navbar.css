@@ -89,3 +89,44 @@
   cursor: pointer;
   color: #333;
 }
+
+/* Hamburger styles for mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+}
+
+/* Responsive layout for mobile */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 60px; /* below navbar */
+    right: 0;
+    background-color: #282c34;
+    flex-direction: column;
+    width: 200px;
+    display: none; /* hidden by default */
+    padding: 10px 0;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .nav-links.active {
+    display: flex; /* show menu when active */
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
