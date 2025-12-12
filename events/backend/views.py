@@ -3,6 +3,7 @@ from .models import *
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -57,17 +58,41 @@ def gallery(request):
 @csrf_exempt
 def register_user(request):
     if request.method == "POST":
+        print("Register User Called")
+
         data = json.loads(request.body)
-        username = data.get("username")
+        print(data)
+
+        # you want username = name
+        username = data.get("name")
         password = data.get("password")
         email = data.get("email")
-        name = data.get("name")
+
+        if not username or not password:
+            return JsonResponse({"error": "Missing required fields"}, status=400)
 
         if User.objects.filter(username=username).exists():
             return JsonResponse({"error": "Username already exists"}, status=400)
 
-        user = User.objects.create_user(username=username, password=password, email=email)
-        UserProfile.objects.create(user=user, name=name)
+        # Create Django User
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email
+        )
+
+        # Create profile (if you have model)
+        UserProfile.objects.create(
+            user=user,
+            name=data.get("name"),
+            father=data.get("father"),
+            mother=data.get("mother"),
+            surname=data.get("surname"),
+            dob=data.get("dob"),
+            gender=data.get("gender"),
+            village=data.get("village"),
+            phone=data.get("phone"),
+        )
 
         return JsonResponse({"message": "User registered successfully"})
 
@@ -75,6 +100,7 @@ def register_user(request):
 def login_user(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        print(data)
         username = data.get("username")
         password = data.get("password")
 
@@ -84,3 +110,10 @@ def login_user(request):
             return JsonResponse({"message": "Login successful", "username": user.username})
         else:
             return JsonResponse({"error": "Invalid credentials"}, status=400)
+
+@csrf_exempt
+def logout_user(request):
+    if request.method == "POST":
+        logout(request)
+        return JsonResponse({"message": "Logged out successfully"})
+    return JsonResponse({"error": "Invalid request method"}, status=400)
