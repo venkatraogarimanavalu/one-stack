@@ -1,25 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { FiMenu } from "react-icons/fi";
 
-const Navbar = () => {
+import "./navbar.css";
+import MobileMenu from "./MobileMenu";
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/events">Events</Link>
-        </li>
-        <li>
-          <Link to="/auth/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/auth/register">Register</Link>
-        </li>
-      </ul>
-    </nav>
-  );
-};
+    <>
+      <header className="navbar">
+        <div className="logo">Venkatraogari manavalu</div>
 
-export default Navbar;
+        <button className="menu-btn" onClick={() => setOpen(true)}>
+          <FiMenu size={22} />
+        </button>
+      </header>
+
+      <AnimatePresence>
+        {open && <MobileMenu onClose={() => setOpen(false)} />}
+      </AnimatePresence>
+    </>
+  );
+}

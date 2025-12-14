@@ -1,0 +1,69 @@
+/* Header */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 64px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f6f2e9;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.menu-btn,
+.close-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #5b3d6e;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #5b3d6e;
+  color: white;
+  padding: 80px 32px 40px;
+  z-index: 20;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* Links */
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: 20px;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 400;
+}
+
+/* Socials */
+.socials {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  gap: 16px;
+  font-size: 18px;
+}

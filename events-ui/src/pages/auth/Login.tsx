@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { fadeUp } from "../../utils/motion"
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { login } = useAuth();
@@ -18,6 +20,33 @@ const Login = () => {
       setError('Invalid email or password');
     }
   };
+
+  if (login) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-background">
+        <motion.div
+          variants={fadeUp}
+          viewport={{ once: true }}
+          initial="hidden"
+          animate="visible"
+          className="bg-white p-10 rounded-2xl shadow-md w-full max-w-md"
+        >
+
+          <h1 className="font-heading text-3xl mb-6">Welcome Back</h1>
+
+          <button
+            onClick={() => {
+              login({ id: "1", email: "user@events.com" });
+              navigate("/dashboard");
+            }}
+            className="w-full bg-primary text-white py-3 rounded-full hover:bg-accent transition"
+          >
+            Continue
+          </button>
+        </motion.div>
+      </main>
+    )
+  }
 
   return (
     <div className="login-container">

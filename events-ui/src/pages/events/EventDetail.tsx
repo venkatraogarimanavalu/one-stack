@@ -1,22 +1,37 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useEvent } from '../../hooks/useEvent';
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { fadeUp, fadeIn } from "../../utils/motion";
 
-const EventDetail = () => {
+export default function EventDetails() {
   const { id } = useParams();
-  const { event, loading, error } = useEvent(id);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading event details.</div>;
 
   return (
-    <div>
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
-      <p>Date: {event.date}</p>
-      <p>Location: {event.location}</p>
-    </div>
-  );
-};
+    <main className="px-8 py-16 max-w-5xl mx-auto">
 
-export default EventDetail;
+      <motion.div
+        variants={fadeIn}
+        initial="hidden"
+        animate="visible"
+        className="h-[400px] bg-gray-200 rounded-2xl mb-10"
+      />
+
+      <motion.h1
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="font-heading text-4xl mb-4"
+      >
+        Cultural Event #{id}
+      </motion.h1>
+
+      <motion.p
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="text-gray-600 mb-8"
+      >
+        A deep dive into cultural traditions and celebrations.
+      </motion.p>
+    </main>
+  );
+}

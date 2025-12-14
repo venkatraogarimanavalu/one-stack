@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Header = () => {
   const navItem =
@@ -10,9 +11,10 @@ const Header = () => {
     <header className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         {/* Logo / Title */}
-        <h1 className="text-lg font-semibold text-gray-900">Events UI</h1>
+        <h1 className="text-lg font-semibold text-gray-900">Venkatraogari manavalu</h1>
 
         {/* Navigation */}
+        {/* <Navbar /> */}
         <nav className="flex gap-2">
           <NavLink
             to="/"
